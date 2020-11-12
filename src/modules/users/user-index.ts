@@ -1,4 +1,4 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply } from 'fastify';
 
 /**
  *
@@ -14,8 +14,9 @@ export default class UserIndex {
   protected fastifyInstance: any;
 
   /**
+   * Constructor
    *
-   * @param fastify
+   * @param fastify {any} fastify instance
    */
   constructor(fastify: any) {
     this.fastifyInstance = fastify;
@@ -30,6 +31,7 @@ export default class UserIndex {
 
     this.fastifyInstance.get('/user', (request: any, response: FastifyReply) => {
       try {
+        // FIXME: query not work
         console.log(collection);
         const users = collection.find({});
         // console.log(users);
