@@ -2,11 +2,15 @@
   "configurations": [
     {
       "command": "npm run debug",
-      "name": "Run npm start",
+      "name": "run debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run dev",
+      "name": "run dev",
       "request": "launch",
       "type": "node-terminal"
     }
-
-
   ]
 }
