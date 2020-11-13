@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import fastify from 'fastify';
+import fastify, { FastifyInstance } from 'fastify';
 import pino from 'pino';
 import UserIndex from './modules/users/user-index';
 import DatabaseUtils from './utils/database-utils';
@@ -11,7 +11,7 @@ async function initializeServer() {
   try {
     console.log('Initializing server...');
     dotenv.config();
-    const server: any = fastify({
+    const server: FastifyInstance = fastify({
       pluginTimeout: 10000,
       logger: pino({
         level: 'debug',
@@ -23,7 +23,7 @@ async function initializeServer() {
       // force to close the mongodb connection when app stopped
       // the default value is false
       forceClose: false,
-      url: DatabaseUtils.getConnectionUrl(),
+      url: DatabaseUtils.getConnectionUrl(server),
     });
 
     // Cors
@@ -44,7 +44,6 @@ async function initializeServer() {
 
     server.listen(port, host, (err: Error, address: string) => {
       if (err) {
-        server.log.error(err);
         process.exit(1);
       }
       // server.swagger();

@@ -1,12 +1,15 @@
+import { FastifyInstance } from 'fastify';
+
 /**
  *
  */
 export default class DatabaseUtils {
   /**
    * create db connection string from env
+   * @param {FastifyInstance} fastify
    * @return {string} connection string
    */
-  static getConnectionUrl(): string {
+  static getConnectionUrl(fastify: FastifyInstance): string {
     const {
       MONGO_DB_HOST, MONGO_DB_PORT, MONGO_DB_DATABASE, MONGO_DB_USER, MONGO_DB_PASSWORD,
     } = process.env;
@@ -20,7 +23,7 @@ export default class DatabaseUtils {
     } else {
       connString = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}/${MONGO_DB_DATABASE}?connectTimeoutMS=10000`;
     }
-    console.log(`Connection string ${connString}`);
+    fastify.log.debug(`Connection string ${connString}`);
     return connString;
   }
 }
