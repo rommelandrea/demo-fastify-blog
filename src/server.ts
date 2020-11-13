@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import fastify, { FastifyInstance } from 'fastify';
 import pino from 'pino';
-import UserIndex from './modules/users/user-index';
 import DatabaseUtils from './utils/database-utils';
+import RouteUtils from './utils/route-utils';
 
 /**
  * Initialize Fastify server
@@ -34,13 +34,12 @@ async function initializeServer() {
     });
     // Swaggerify
     // server.register(require('fastify-swagger'), swaggerOptions);
-    // ServerUtils.registerRoutes(server);
+    RouteUtils.registerRoutes(server);
 
     const port = Number.parseInt(process.env.PORT === undefined ? '5000' : process.env.PORT, 10);
     const host = process.env.HOST === undefined ? 'localhost' : process.env.HOST;
 
-    const users = new UserIndex(server);
-    users.register();
+    RouteUtils.registerRoutes(server);
 
     server.listen(port, host, (err: Error, address: string) => {
       if (err) {

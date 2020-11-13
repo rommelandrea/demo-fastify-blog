@@ -1,4 +1,4 @@
-import { FastifyReply } from 'fastify';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 /**
  *
@@ -14,28 +14,31 @@ export default class UserIndex {
   protected fastifyInstance: any;
 
   /**
-   * Constructor
+   * Creates an instance of UserIndex.
    *
-   * @param fastify {any} fastify instance
+   * @param {*} fastify
+   * @memberof UserIndex
    */
-  constructor(fastify: any) {
+  constructor(fastify: FastifyInstance) {
     this.fastifyInstance = fastify;
   }
 
   /**
    *
+   *
+   * @memberof UserIndex
    */
   public register() {
     const db = this.fastifyInstance.mongo.db;
     const collection = db.collection('users');
 
-    this.fastifyInstance.get('/user', (request: any, response: FastifyReply) => {
+    this.fastifyInstance.get('/user', async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         // FIXME: query not work
         console.log(collection);
-        const users = collection.find({});
+        const users = await collection.findOne({username: 'rommel'});
         // console.log(users);
-        response.send({});
+        reply.send(users);
       } catch (err) {
         this.fastifyInstance.log.error(err);
 
